@@ -8,6 +8,15 @@
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <h1>🌦️ Cek Cuaca dan Lokasi</h1>
+
+  <input type="text" id="lokasiInput" placeholder="Masukkan nama kota...">
+  <button id="getWeather">Get</button>
+
+  <div id="hasil">
+    <p>Masukkan lokasi, lalu klik <b>Get</b> untuk melihat hasil.</p>
+  </div>
+
     CUACA: <p id="lokasi"></p>
     <hr>
     <div id="tampilan"></div>
@@ -24,6 +33,7 @@
                 let lokasi = data.location.name;
                 a.innerHTML=suhu;
                 b.innerHTML=lokasi;
+
 
 
             },

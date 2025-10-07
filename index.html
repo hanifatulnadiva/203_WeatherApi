@@ -1,14 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset ="UTF-8">
-    <meta  name = "viewport" content="width=device-width, initial-scale=1.0">
-    <title>CUACA</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Cuaca & Lokasi</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #89f7fe, #66a6ff);
+      text-align: center;
+      padding-top: 50px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 220px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-left: 8px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: inline-block;
+      text-align: left;
+      padding: 20px;
+      margin: 15px;
+      width: 280px;
+      vertical-align: top;
+    }
+
+    hr {
+      border: none;
+      height: 1px;
+      background-color: #ccc;
+      margin: 20px 0;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    #hasil {
+      margin-top: 30px;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>🌦️ Cek Cuaca dan Lokasi</h1>
+  <h1>🌦️ Cek Cuaca dan Lokasi</h1>
 
   <input type="text" id="lokasiInput" placeholder="Masukkan nama kota...">
   <button id="getWeather">Get</button>
@@ -17,42 +84,54 @@
     <p>Masukkan lokasi, lalu klik <b>Get</b> untuk melihat hasil.</p>
   </div>
 
-    CUACA: <p id="lokasi"></p>
-    <hr>
-    <div id="tampilan"></div>
-    <script>
-        $("#getWeather").click(function() {
-            
-            const lokasi = $("#lokasiInput").val().trim();
-            const apiKey = "83e168f1330c4ec5bc521040250710"; 
+  <script>
+    $("#getWeather").click(function() {
+      const lokasi = $("#lokasiInput").val().trim();
 
-            if (lokasi === "") {
-                alert("Silakan masukkan nama kota terlebih dahulu!");
-                return;
-            }
+      if (lokasi === "") {
+        alert("Silakan masukkan nama kota atau daerah terlebih dahulu!");
+        return;
+      }
 
-            const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;
-            
-        $.ajax({
-            url : urlapi,
-            method :"GET",
-            success : function(data){
-                console.log(data);
-                const a =document.getElementById("tampilan");
-                const b = document.getElementById('lokasi');
-                let suhu =data.current.temp_c;
-                let lokasi = data.location.name;
-                a.innerHTML=suhu;
-                b.innerHTML=lokasi;
+      const apiKey = "83e168f1330c4ec5bc521040250710"; // Ganti dengan API key kamu
+      const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;
 
-                
+      $.ajax({
+        url: urlapi,
+        method: "GET",
+        success: function(data) {
+          console.log(data);
 
-            },
-            fail: function(error){
-                console.log(error);
-            },
+          const lokasiData = data.location;
+          const cuacaData = data.current;
 
-        })
-    </script>
+          $("#hasil").html(`
+            <div class="card">
+              <h2>🌤️ CUACA</h2>
+              <hr>
+              <p><span class="label">Suhu:</span> ${cuacaData.temp_c}°C</p>
+              <p><span class="label">Kelembapan:</span> ${cuacaData.humidity}%</p>
+              <p><span class="label">Kondisi:</span> ${cuacaData.condition.text}</p>
+            </div>
+
+            <div class="card">
+              <h2>📍 LOKASI</h2>
+              <hr>
+              <p><span class="label">Negara:</span> ${lokasiData.country}</p>
+              <p><span class="label">Provinsi:</span> ${lokasiData.region}</p>
+              <p><span class="label">Kecamatan / Kota:</span> ${lokasiData.name}</p>
+              <p><span class="label">Longitude:</span> ${lokasiData.lon}</p>
+              <p><span class="label">Latitude:</span> ${lokasiData.lat}</p>
+            </div>
+          `);
+        },
+        error: function(error) {
+          console.log(error);
+          $("#hasil").html("<p style='color:red;'>Data tidak ditemukan atau terjadi kesalahan.</p>");
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>

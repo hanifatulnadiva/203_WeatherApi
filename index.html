@@ -21,7 +21,8 @@
     <hr>
     <div id="tampilan"></div>
     <script>
-        const urlapi="http://api.weatherapi.com/v1/current.json?key=83e168f1330c4ec5bc521040250710&q=Yogyakarta&aqi=no";
+        
+        const urlapi="const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;";
         $.ajax({
             url : urlapi,
             method :"GET",
@@ -34,7 +35,7 @@
                 a.innerHTML=suhu;
                 b.innerHTML=lokasi;
 
-
+                
 
             },
             fail: function(error){

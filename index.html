@@ -4,9 +4,9 @@
     <meta charset ="UTF-8">
     <meta  name = "viewport" content="width=device-width, initial-scale=1.0">
     <title>CUACA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <h1>🌦️ Cek Cuaca dan Lokasi</h1>
 
@@ -21,8 +21,18 @@
     <hr>
     <div id="tampilan"></div>
     <script>
-        
-        const urlapi="const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;";
+        $("#getWeather").click(function() {
+            
+            const lokasi = $("#lokasiInput").val().trim();
+            const apiKey = "83e168f1330c4ec5bc521040250710"; 
+
+            if (lokasi === "") {
+                alert("Silakan masukkan nama kota terlebih dahulu!");
+                return;
+            }
+
+            const urlapi = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lokasi}&aqi=no`;
+            
         $.ajax({
             url : urlapi,
             method :"GET",
